@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
@@ -17,10 +17,10 @@ export default function LoginScreen() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert('Login realizado com sucesso!');
-      navigation.navigate('Home');
-    } catch (error: unknown) { // Verifique se o erro é desconhecido
+      navigation.replace('Home');
+    } catch (error: unknown) {
       if (error instanceof Error) {
-        alert(error.message); // Exiba a mensagem de erro
+        alert(error.message);
       } else {
         alert('Ocorreu um erro desconhecido');
       }
@@ -28,7 +28,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>niceDonate</Text>
       <TextInput
         style={styles.input}
@@ -59,7 +59,7 @@ export default function LoginScreen() {
           Crie agora
         </Text>
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

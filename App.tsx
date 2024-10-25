@@ -1,8 +1,10 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './src/screens/LoginScreen';
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
+import TabNavigator from './src/navigation/TabNavigator'; // Importa o TabNavigator
 import { RootStackParamList } from './src/types'; // Importe o tipo de types.ts
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -11,6 +13,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
+        {/* Telas de Autenticação */}
         <Stack.Screen 
           name="Login" 
           component={LoginScreen} 
@@ -25,6 +28,12 @@ export default function App() {
           name="Register" 
           component={RegisterScreen} 
           options={{ title: 'Crie sua conta' }} 
+        />
+        {/* Após o login, navega para o TabNavigator */}
+        <Stack.Screen 
+          name="MainTabs" 
+          component={TabNavigator} 
+          options={{ headerShown: false }} 
         />
       </Stack.Navigator>
     </NavigationContainer>

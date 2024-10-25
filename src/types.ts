@@ -3,4 +3,5 @@ export type RootStackParamList = {
     ForgotPassword: undefined;
     Register: undefined;
     Home: undefined;
+    MainTabs: undefined;
   };

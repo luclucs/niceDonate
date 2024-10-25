@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types'; // Importe corretamente os tipos
-import { auth } from '../firebaseConfig'; // Importe a instância de autenticação do Firebase
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Importe a função para criar o usuário
+import { RootStackParamList } from '../types';
+import { auth } from '../firebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 type RegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 
@@ -16,22 +16,21 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password); // Usar a função corretamente
+      await createUserWithEmailAndPassword(auth, email, password);
       alert('Usuário registrado com sucesso!');
-      navigation.navigate('Home'); // Após registro, redirecionar para a Home
+      navigation.replace('Home');
     } catch (error: unknown) {
       if (error instanceof Error) {
         alert(error.message);
       } else {
-        alert('Ocorreu um erro desconhecido.');
+        alert('Ocorreu um erro desconhecido');
       }
     }
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Preencha o cadastro :)</Text>
-
       <TextInput
         style={styles.input}
         placeholder="Nome Completo"
@@ -57,10 +56,13 @@ export default function RegisterScreen() {
         <Text style={styles.registerButtonText}>Registrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.backToLoginText}>Já tem uma conta? Voltar para Login</Text>
-      </TouchableOpacity>
-    </View>
+      <Text style={styles.loginText}>
+        Já tem uma conta?{' '}
+        <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>
+          Voltar para login
+        </Text>
+      </Text>
+    </SafeAreaView>
   );
 }
 
@@ -97,8 +99,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  backToLoginText: {
+  loginText: {
     textAlign: 'center',
+    fontSize: 14,
+    color: '#555',
+  },
+  loginLink: {
     color: '#5f48bf',
     fontWeight: 'bold',
   },
