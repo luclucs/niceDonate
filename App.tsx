@@ -31,7 +31,7 @@ export default function App() {
         />
         {/* Após o login, navega para o TabNavigator */}
         <Stack.Screen 
-          name="MainTabs" 
+          name="Home" 
           component={TabNavigator} 
           options={{ headerShown: false }} 
         />
