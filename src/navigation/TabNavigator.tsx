@@ -1,11 +1,21 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
-import AddDonationScreen from '../screens/AddDonationScreen';
+import SelectDonationTypeScreen from '../screens/SelectDonationTypeScreen';
+import FinalizeDonationScreen from '../screens/FinalizeDonationScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
+const ContributeStack = createStackNavigator();
+
+const ContributeStackNavigator = () => (
+  <ContributeStack.Navigator screenOptions={{ headerShown: false }}>
+    <ContributeStack.Screen name="SelectDonationType" component={SelectDonationTypeScreen} />
+    <ContributeStack.Screen name="FinalizeDonation" component={FinalizeDonationScreen} />
+  </ContributeStack.Navigator>
+);
 
 const TabNavigator = () => {
   return (
@@ -26,11 +36,11 @@ const TabNavigator = () => {
         },
         tabBarActiveTintColor: '#7e60bf',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false, // Não exibe cabeçalhos nas telas
+        headerShown: false,
       })}
     >
       <Tab.Screen name="Início" component={HomeScreen} />
-      <Tab.Screen name="Contribuir" component={AddDonationScreen} />
+      <Tab.Screen name="Contribuir" component={ContributeStackNavigator} />
       <Tab.Screen name="Perfil" component={ProfileScreen} />
     </Tab.Navigator>
   );
