@@ -15,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { firestore } from '../firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 type FinalizeDonationScreenRouteProp = RouteProp<RootStackParamList, 'FinalizeDonation'>;
 type FinalizeDonationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FinalizeDonation'>;
@@ -30,14 +31,22 @@ const FinalizeDonationScreen = () => {
 
   const handleSubmit = async () => {
     try {
-      // Referência à coleção no Firestore
+      const currentUser = getAuth().currentUser;
+      if (!currentUser) {
+        Alert.alert('Erro', 'Usuário não autenticado.');
+        return;
+      }
+
+      // Referência à coleção no Firestore com o UID do usuário autenticado
       await addDoc(collection(firestore, 'socialActions'), {
         title,
         description,
         location,
         categories: selectedCategories,
         createdAt: new Date(),
+        uid: currentUser.uid,  // Captura o UID do usuário autenticado
       });
+
       Alert.alert('Sucesso', 'Ação social cadastrada com sucesso!');
       navigation.navigate('Home'); // Redireciona para a Home após sucesso
     } catch (error) {

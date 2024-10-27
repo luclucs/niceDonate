@@ -37,14 +37,17 @@ const HomeScreen = () => {
     });
 
     const unsubscribeDonations = onSnapshot(collection(firestore, 'socialActions'), (snapshot) => {
-      const donationsList = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        name: doc.data().title || 'Anônimo',
-        location: doc.data().location || 'Localização não especificada',
-        type: Object.keys(doc.data().categories).filter((key) => doc.data().categories[key]).join(', '),
-        uid: doc.data().uid,
-        image: doc.data().image || 'https://example.com/default-profile.jpg',
-      }));
+      const donationsList = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          name: data.title || 'Anônimo',
+          location: data.location || 'Localização não especificada',
+          type: Object.keys(data.categories || {}).filter((key) => data.categories[key]).join(', '),
+          uid: data.uid || '',
+          image: data.image || 'https://example.com/default-profile.jpg',
+        };
+      });
       setDonations(donationsList);
       setFilteredDonations(donationsList);
     });
@@ -71,9 +74,8 @@ const HomeScreen = () => {
     setSelectedCategories((prev) => ({ ...prev, [category]: !prev[category] }));
 
   const openDetailModal = (donation: Donation) => {
+    console.log("Opening Modal for Donation:", donation); // Log para verificar o objeto
     setSelectedDonation(donation);
-    console.log('Current User UID:', currentUser?.uid);
-    console.log('Selected Donation UID:', donation.uid);
     setIsDetailModalVisible(true);
   };
 
