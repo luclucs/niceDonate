@@ -15,7 +15,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
 import { firestore } from '../firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 
 type FinalizeDonationScreenRouteProp = RouteProp<RootStackParamList, 'FinalizeDonation'>;
 type FinalizeDonationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'FinalizeDonation'>;
@@ -31,24 +30,15 @@ const FinalizeDonationScreen = () => {
 
   const handleSubmit = async () => {
     try {
-      const currentUser = getAuth().currentUser;
-      if (!currentUser) {
-        Alert.alert('Erro', 'Usuário não autenticado.');
-        return;
-      }
-
-      // Referência à coleção no Firestore com o UID do usuário autenticado
       await addDoc(collection(firestore, 'socialActions'), {
         title,
         description,
         location,
         categories: selectedCategories,
         createdAt: new Date(),
-        uid: currentUser.uid,  // Captura o UID do usuário autenticado
       });
-
       Alert.alert('Sucesso', 'Ação social cadastrada com sucesso!');
-      navigation.navigate('Home'); // Redireciona para a Home após sucesso
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Erro ao cadastrar ação social:', error);
       Alert.alert('Erro', 'Não foi possível cadastrar a ação social. Tente novamente.');
@@ -105,6 +95,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 20,
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -115,19 +106,22 @@ const styles = StyleSheet.create({
   },
   form: {
     backgroundColor: '#fff',
-    padding: 20,
+    padding: 25,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
+    width: '100%',
+    maxWidth: 400,
   },
   input: {
     borderWidth: 1,
     borderColor: '#d7ceeb',
     borderRadius: 10,
-    padding: 10,
+    padding: 12,
     marginBottom: 15,
+    fontSize: 16,
   },
   subtitle: {
     fontSize: 16,
@@ -135,11 +129,13 @@ const styles = StyleSheet.create({
     color: '#5f48bf',
     marginTop: 20,
     marginBottom: 10,
+    textAlign: 'center',
   },
   category: {
     fontSize: 14,
     color: '#777',
     marginBottom: 5,
+    textAlign: 'center',
   },
   submitButton: {
     backgroundColor: '#7e60bf',

@@ -11,18 +11,26 @@ type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const handleLogin = async () => {
+    // Limpeza de mensagens de erro anteriores
+    setErrorMessage(null);
+
+    if (!email || !password) {
+      setErrorMessage('Por favor, preencha todos os campos.');
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert('Login realizado com sucesso!');
       navigation.replace('Home');
     } catch (error: unknown) {
       if (error instanceof Error) {
-        alert(error.message);
+        setErrorMessage(error.message);
       } else {
-        alert('Ocorreu um erro desconhecido');
+        setErrorMessage('Ocorreu um erro desconhecido');
       }
     }
   };
@@ -30,12 +38,16 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>niceDonate</Text>
+
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="Email Address"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
+        accessibilityLabel="Endereço de email"
       />
       <TextInput
         style={styles.input}
@@ -43,19 +55,28 @@ export default function LoginScreen() {
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
+        accessibilityLabel="Senha"
       />
 
       <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
         <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.signInButton} onPress={handleLogin}>
+      <TouchableOpacity
+        style={styles.signInButton}
+        onPress={handleLogin}
+        accessibilityLabel="Botão para fazer login"
+      >
         <Text style={styles.signInButtonText}>Sign In</Text>
       </TouchableOpacity>
 
       <Text style={styles.createAccountText}>
         Não tem uma conta?{' '}
-        <Text style={styles.createAccountLink} onPress={() => navigation.navigate('Register')}>
+        <Text
+          style={styles.createAccountLink}
+          onPress={() => navigation.navigate('Register')}
+          accessibilityLabel="Ir para tela de cadastro"
+        >
           Crie agora
         </Text>
       </Text>
@@ -74,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
     color: '#5f48bf',
   },
   input: {
@@ -109,5 +130,10 @@ const styles = StyleSheet.create({
   createAccountLink: {
     color: '#5f48bf',
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });

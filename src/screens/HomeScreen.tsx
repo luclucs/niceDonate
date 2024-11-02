@@ -74,7 +74,6 @@ const HomeScreen = () => {
     setSelectedCategories((prev) => ({ ...prev, [category]: !prev[category] }));
 
   const openDetailModal = (donation: Donation) => {
-    console.log("Opening Modal for Donation:", donation); // Log para verificar o objeto
     setSelectedDonation(donation);
     setIsDetailModalVisible(true);
   };
@@ -128,7 +127,6 @@ const HomeScreen = () => {
         <Text style={styles.filterButtonText}>Filtrar</Text>
       </TouchableOpacity>
 
-      {/* Modal de Filtro */}
       <Modal visible={isFilterModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.filterContent}>
@@ -152,7 +150,6 @@ const HomeScreen = () => {
         </View>
       </Modal>
 
-      {/* Modal de Detalhes (tela cheia) */}
       <Modal visible={isDetailModalVisible} animationType="slide" transparent={false}>
         <SafeAreaView style={styles.detailModalContainer}>
           {selectedDonation && (
@@ -182,26 +179,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2eff9',
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#5f48bf',
+    marginTop: 20,
     marginBottom: 20,
     textAlign: 'center',
   },
   listContainer: {
-    paddingBottom: 20,
+    paddingBottom: 30,
   },
   card: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 15,
     padding: 15,
     marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 10,
+    elevation: 4,
   },
   profileImage: {
     width: 50,
@@ -226,19 +224,24 @@ const styles = StyleSheet.create({
   },
   type: {
     fontSize: 14,
+    fontWeight: 'bold',
     color: '#5f48bf',
+    marginTop: 2,
   },
   expandIcon: {
     marginLeft: 10,
   },
   filterButton: {
-    position: 'absolute',
-    bottom: 20,
-    alignSelf: 'center',
     backgroundColor: '#7e60bf',
-    paddingHorizontal: 30,
-    paddingVertical: 15,
+    paddingHorizontal: 25,
+    paddingVertical: 12,
     borderRadius: 10,
+    alignSelf: 'center',
+    marginTop: 10,
+    marginBottom: 60,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
   },
   filterButtonText: {
     color: '#fff',

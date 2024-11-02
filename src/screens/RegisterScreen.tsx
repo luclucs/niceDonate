@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
@@ -12,18 +12,32 @@ export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   const handleRegister = async () => {
+    // Limpeza de mensagens de erro anteriores
+    setErrorMessage(null);
+
+    if (!name || !email || !password) {
+      setErrorMessage('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMessage('A senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Usuário registrado com sucesso!');
+      Alert.alert('Sucesso', 'Usuário registrado com sucesso!');
       navigation.replace('Home');
     } catch (error: unknown) {
       if (error instanceof Error) {
-        alert(error.message);
+        setErrorMessage(error.message);
       } else {
-        alert('Ocorreu um erro desconhecido');
+        setErrorMessage('Ocorreu um erro desconhecido');
       }
     }
   };
@@ -31,11 +45,15 @@ export default function RegisterScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Preencha o cadastro :)</Text>
+
+      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="Nome Completo"
         value={name}
         onChangeText={setName}
+        accessibilityLabel="Nome completo"
       />
       <TextInput
         style={styles.input}
@@ -43,6 +61,7 @@ export default function RegisterScreen() {
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
+        accessibilityLabel="Endereço de email"
       />
       <TextInput
         style={styles.input}
@@ -50,15 +69,24 @@ export default function RegisterScreen() {
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
+        accessibilityLabel="Senha"
       />
 
-      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+      <TouchableOpacity
+        style={styles.registerButton}
+        onPress={handleRegister}
+        accessibilityLabel="Registrar nova conta"
+      >
         <Text style={styles.registerButtonText}>Registrar</Text>
       </TouchableOpacity>
 
       <Text style={styles.loginText}>
         Já tem uma conta?{' '}
-        <Text style={styles.loginLink} onPress={() => navigation.navigate('Login')}>
+        <Text
+          style={styles.loginLink}
+          onPress={() => navigation.navigate('Login')}
+          accessibilityLabel="Ir para tela de login"
+        >
           Voltar para login
         </Text>
       </Text>
@@ -77,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 40,
+    marginBottom: 20,
     color: '#5f48bf',
   },
   input: {
@@ -107,5 +135,10 @@ const styles = StyleSheet.create({
   loginLink: {
     color: '#5f48bf',
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });

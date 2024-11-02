@@ -6,7 +6,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList, Category } from '../types';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-// Importando o PNG corretamente
 const swingImage = require('../assets/images/undraw_swing_jn5d.png');
 
 type SelectDonationTypeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SelectDonationType'>;
@@ -41,57 +40,29 @@ const SelectDonationTypeScreen = () => {
           <Text style={styles.subtitle}>Doar</Text>
           <View style={styles.checkboxContainer}>
             <View style={styles.checkboxRow}>
-              <TouchableOpacity style={styles.checkboxWrapper} onPress={() => toggleCategory('brinquedos')}>
-                <Checkbox
-                  status={selectedCategories.brinquedos ? 'checked' : 'unchecked'}
-                  color="#7e60bf"
-                  uncheckedColor="#7e60bf"
-                />
-                <Text style={styles.checkboxLabel}>Brinquedos</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.checkboxWrapper} onPress={() => toggleCategory('alimentos')}>
-                <Checkbox
-                  status={selectedCategories.alimentos ? 'checked' : 'unchecked'}
-                  color="#7e60bf"
-                  uncheckedColor="#7e60bf"
-                />
-                <Text style={styles.checkboxLabel}>Alimentos</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.checkboxRow}>
-              <TouchableOpacity style={styles.checkboxWrapper} onPress={() => toggleCategory('roupas')}>
-                <Checkbox
-                  status={selectedCategories.roupas ? 'checked' : 'unchecked'}
-                  color="#7e60bf"
-                  uncheckedColor="#7e60bf"
-                />
-                <Text style={styles.checkboxLabel}>Roupas</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.checkboxWrapper} onPress={() => toggleCategory('moveis')}>
-                <Checkbox
-                  status={selectedCategories.moveis ? 'checked' : 'unchecked'}
-                  color="#7e60bf"
-                  uncheckedColor="#7e60bf"
-                />
-                <Text style={styles.checkboxLabel}>Móveis</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.checkboxRow}>
-              <TouchableOpacity style={styles.checkboxWrapper} onPress={() => toggleCategory('outros')}>
-                <Checkbox
-                  status={selectedCategories.outros ? 'checked' : 'unchecked'}
-                  color="#7e60bf"
-                  uncheckedColor="#7e60bf"
-                />
-                <Text style={styles.checkboxLabel}>Outros</Text>
-              </TouchableOpacity>
+              {Object.keys(selectedCategories).map((category) => (
+                <TouchableOpacity
+                  key={category}
+                  style={[
+                    styles.checkboxWrapper,
+                    selectedCategories[category as Category] && styles.checkboxSelected,
+                  ]}
+                  onPress={() => toggleCategory(category as Category)}
+                >
+                  <Checkbox
+                    status={selectedCategories[category as Category] ? 'checked' : 'unchecked'}
+                    color="#7e60bf"
+                    uncheckedColor="#7e60bf"
+                  />
+                  <Text style={styles.checkboxLabel}>{category.charAt(0).toUpperCase() + category.slice(1)}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
-          <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-            <Ionicons name="arrow-forward-circle" size={50} color="#7e60bf" />
-          </TouchableOpacity>
         </View>
-        {/* Exibindo a imagem PNG */}
+        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+          <Ionicons name="arrow-forward-circle" size={60} color="#5f48bf" />
+        </TouchableOpacity>
         <Image source={swingImage} style={styles.image} resizeMode="contain" />
       </ScrollView>
     </SafeAreaView>
@@ -105,7 +76,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 20,
-    alignItems: 'center', // Centraliza os elementos no topo
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
@@ -124,6 +95,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     alignItems: 'center',
     width: '100%',
+    marginBottom: 20,
   },
   subtitle: {
     fontSize: 18,
@@ -137,8 +109,8 @@ const styles = StyleSheet.create({
   },
   checkboxRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     marginVertical: 5,
     width: '100%',
   },
@@ -148,23 +120,34 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#7e60bf',
     borderRadius: 4,
-    padding: 4,
-    paddingHorizontal: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    margin: 5,
+    minWidth: 120,
+    justifyContent: 'center',
   },
   checkboxLabel: {
     fontSize: 16,
     color: '#5f48bf',
     marginLeft: 8,
   },
+  checkboxSelected: {
+    backgroundColor: '#e0d4f7',
+    borderColor: '#5f48bf',
+  },
   nextButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
+    marginTop: 15,
+    alignSelf: 'center',
+    backgroundColor: '#e0d4f7',
+    borderRadius: 50,
+    padding: 12,
   },
   image: {
-    marginTop: 20,
-    width: '100%',
-    height: 300,
+    width: '90%', // Ajusta a imagem para ocupar até 90% da largura
+    maxHeight: 220, // Limita a altura da imagem a 200
+    aspectRatio: 1, // Mantém a proporção da imagem
+    resizeMode: 'contain', // Ajusta a imagem para caber no espaço definido
+    marginTop: 0,
   },
 });
 
