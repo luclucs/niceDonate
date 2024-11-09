@@ -15,7 +15,6 @@ export default function LoginScreen() {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const handleLogin = async () => {
-    // Limpeza de mensagens de erro anteriores
     setErrorMessage(null);
 
     if (!email || !password) {
@@ -43,7 +42,8 @@ export default function LoginScreen() {
 
       <TextInput
         style={styles.input}
-        placeholder="Email Address"
+        placeholder="Email"
+        placeholderTextColor="#7e60bf"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
@@ -51,7 +51,8 @@ export default function LoginScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Senha"
+        placeholderTextColor="#7e60bf"
         secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
@@ -102,19 +103,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d7ceeb',
     borderRadius: 10,
-    padding: 10,
+    padding: 16,
+    marginHorizontal: 20,
+    marginTop: 16,
     marginBottom: 10,
   },
   forgotPasswordText: {
     textAlign: 'right',
     color: '#5f48bf',
+    marginHorizontal: 20,
     marginBottom: 20,
   },
   signInButton: {
     backgroundColor: '#7e60bf',
     paddingVertical: 15,
     borderRadius: 10,
+    marginHorizontal:20,
     alignItems: 'center',
+    marginTop: 24,
     marginBottom: 20,
   },
   signInButtonText: {
