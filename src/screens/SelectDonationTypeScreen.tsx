@@ -34,7 +34,7 @@ const SelectDonationTypeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
+      <View style={styles.contentContainer}>
         <Text style={styles.title}>Ajude alguém hoje ;)</Text>
         <View style={styles.card}>
           <Text style={styles.subtitle}>Doar</Text>
@@ -64,7 +64,7 @@ const SelectDonationTypeScreen = () => {
           <Ionicons name="arrow-forward-circle" size={60} color="#5f48bf" />
         </TouchableOpacity>
         <Image source={swingImage} style={styles.image} resizeMode="contain" />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#7e60bf',
     borderRadius: 4,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     margin: 5,
-    minWidth: 120,
+    width: 150,
     justifyContent: 'center',
   },
   checkboxLabel: {
@@ -136,17 +136,18 @@ const styles = StyleSheet.create({
     borderColor: '#5f48bf',
   },
   nextButton: {
-    marginTop: 15,
+    marginTop: 16,
+    marginBottom: 20,
     alignSelf: 'center',
     backgroundColor: '#e0d4f7',
     borderRadius: 50,
     padding: 12,
   },
   image: {
-    width: '90%', // Ajusta a imagem para ocupar até 90% da largura
-    maxHeight: 220, // Limita a altura da imagem a 200
-    aspectRatio: 1, // Mantém a proporção da imagem
-    resizeMode: 'contain', // Ajusta a imagem para caber no espaço definido
+    width: '90%', 
+    maxHeight: 220, 
+    aspectRatio: 1, 
+    resizeMode: 'contain', 
     marginTop: 0,
   },
 });

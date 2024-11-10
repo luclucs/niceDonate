@@ -22,12 +22,12 @@ export default function App() {
         <Stack.Screen 
           name="ForgotPassword" 
           component={ForgotPasswordScreen} 
-          options={{ title: 'Recuperar Senha' }} 
+          options={{ headerShown: false }} 
         />
         <Stack.Screen 
           name="Register" 
           component={RegisterScreen} 
-          options={{ title: 'Crie sua conta' }} 
+          options={{ headerShown: false }} 
         />
         {/* Após o login, navega para o TabNavigator */}
         <Stack.Screen 

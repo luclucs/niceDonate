@@ -23,7 +23,7 @@ const FinalizeDonationScreen = () => {
   const route = useRoute<FinalizeDonationScreenRouteProp>();
   const navigation = useNavigation<FinalizeDonationScreenNavigationProp>();
   const { selectedCategories } = route.params;
-
+6
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');

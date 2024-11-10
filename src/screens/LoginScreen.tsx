@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
@@ -35,6 +35,7 @@ export default function LoginScreen() {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>niceDonate</Text>
 
@@ -68,7 +69,7 @@ export default function LoginScreen() {
         onPress={handleLogin}
         accessibilityLabel="Botão para fazer login"
       >
-        <Text style={styles.signInButtonText}>Sign In</Text>
+        <Text style={styles.signInButtonText}>Entre agora</Text>
       </TouchableOpacity>
 
       <Text style={styles.createAccountText}>
@@ -82,6 +83,7 @@ export default function LoginScreen() {
         </Text>
       </Text>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
