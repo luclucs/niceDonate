@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, SafeAreaView, TouchableOpacity, Modal, Button, Alert } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, SafeAreaView, TouchableOpacity, Modal, Alert, Button } from 'react-native';
 import { firestore } from '../firebaseConfig';
 import { collection, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 import { Checkbox } from 'react-native-paper';
 import { getAuth } from 'firebase/auth';
+
+// Array de ícones locais
+const icons = [
+  require('../assets/icons/icon1.png'),
+  require('../assets/icons/icon2.png'),
+  require('../assets/icons/icon3.png'),
+  require('../assets/icons/icon4.png'),
+  require('../assets/icons/icon5.png'),
+  require('../assets/icons/icon6.png'),
+];
 
 type Donation = {
   id: string;
@@ -12,7 +22,7 @@ type Donation = {
   location: string;
   type: string;
   uid: string;
-  image?: string;
+  iconIndex?: number;
 };
 
 const HomeScreen = () => {
@@ -45,7 +55,7 @@ const HomeScreen = () => {
           location: data.location || 'Localização não especificada',
           type: Object.keys(data.categories || {}).filter((key) => data.categories[key]).join(', '),
           uid: data.uid || '',
-          image: data.image || 'https://example.com/default-profile.jpg',
+          iconIndex: data.iconIndex ?? 0, // Define 0 como padrão se iconIndex estiver ausente
         };
       });
       setDonations(donationsList);
@@ -99,7 +109,7 @@ const HomeScreen = () => {
 
   const renderDonationItem = ({ item }: { item: Donation }) => (
     <View style={styles.card}>
-      <Image source={{ uri: item.image }} style={styles.profileImage} />
+      <Image source={icons[item.iconIndex ?? 0]} style={styles.profileImage} />
       <View style={styles.cardContent}>
         <View>
           <Text style={styles.name}>{item.name}</Text>
@@ -127,6 +137,7 @@ const HomeScreen = () => {
         <Text style={styles.filterButtonText}>Filtrar</Text>
       </TouchableOpacity>
 
+      {/* Filtro Modal */}
       <Modal visible={isFilterModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.filterContent}>
@@ -150,11 +161,12 @@ const HomeScreen = () => {
         </View>
       </Modal>
 
+      {/* Detalhes Modal */}
       <Modal visible={isDetailModalVisible} animationType="slide" transparent={false}>
         <SafeAreaView style={styles.detailModalContainer}>
           {selectedDonation && (
             <>
-              <Image source={{ uri: selectedDonation.image }} style={styles.detailImage} />
+              <Image source={icons[selectedDonation.iconIndex ?? 0]} style={styles.detailImage} />
               <Text style={styles.detailName}>{selectedDonation.name}</Text>
               <Text style={styles.detailLocation}>{selectedDonation.location}</Text>
               <Text style={styles.detailType}>Categorias: {selectedDonation.type}</Text>

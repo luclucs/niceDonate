@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Checkbox } from 'react-native-paper';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     margin: 5,
-    width: 150,
+    width: 140,
     justifyContent: 'center',
   },
   checkboxLabel: {
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '90%', 
-    maxHeight: 220, 
+    maxHeight: 200, 
     aspectRatio: 1, 
     resizeMode: 'contain', 
     marginTop: 0,

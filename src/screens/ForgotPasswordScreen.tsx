@@ -52,7 +52,6 @@ export default function ForgotPasswordScreen() {
 
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
-        {/* Campo de e-mail */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>E-mail</Text>
           <View style={styles.emailWrapper}>
@@ -63,6 +62,7 @@ export default function ForgotPasswordScreen() {
               value={email}
               onChangeText={setEmail}
               autoCapitalize="none"
+              placeholderTextColor="#aaa"
             />
             <Ionicons name="mail" size={24} color="gray" />
           </View>
@@ -81,9 +81,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f2eff9',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#7e60bf',
@@ -91,9 +92,9 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '500',
     textAlign: 'center',
-    color: '#7e60bf',
+    color: '#5f48bf',
     marginBottom: 5,
   },
   description: {
@@ -101,6 +102,7 @@ const styles = StyleSheet.create({
     color: '#7e60bf',
     textAlign: 'center',
     marginBottom: 20,
+    lineHeight: 20,
   },
   inputContainer: {
     marginBottom: 20,
@@ -109,6 +111,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#7e60bf',
     marginBottom: 5,
+    fontWeight: '500',
   },
   emailWrapper: {
     flexDirection: 'row',
@@ -117,11 +120,14 @@ const styles = StyleSheet.create({
     borderColor: '#d7ceeb',
     borderRadius: 10,
     paddingHorizontal: 10,
+    backgroundColor: '#fff',
   },
   input: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 5,
     fontSize: 16,
+    color: '#333',
   },
   resetButton: {
     backgroundColor: '#7e60bf',
@@ -129,6 +135,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
   },
   resetButtonText: {
     color: '#fff',
@@ -139,5 +149,6 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginBottom: 10,
+    fontSize: 14,
   },
 });
