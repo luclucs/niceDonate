@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { Checkbox } from 'react-native-paper';
 import { getAuth } from 'firebase/auth';
 
-// Array de ícones locais
 const icons = [
   require('../assets/icons/icon1.png'),
   require('../assets/icons/icon2.png'),
@@ -55,7 +54,7 @@ const HomeScreen = () => {
           location: data.location || 'Localização não especificada',
           type: Object.keys(data.categories || {}).filter((key) => data.categories[key]).join(', '),
           uid: data.uid || '',
-          iconIndex: data.iconIndex ?? 0, // Define 0 como padrão se iconIndex estiver ausente
+          iconIndex: data.iconIndex ?? 0,
         };
       });
       setDonations(donationsList);
@@ -200,12 +199,14 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 30,
+    alignItems: 'center',
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 15,
     padding: 15,
     marginBottom: 15,
+    width: '90%', // Limita a largura dos cards para que não ocupem toda a tela
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#000',
@@ -245,19 +246,19 @@ const styles = StyleSheet.create({
   },
   filterButton: {
     backgroundColor: '#7e60bf',
-    paddingHorizontal: 25,
-    paddingVertical: 12,
-    borderRadius: 10,
+    paddingHorizontal: 35,
+    paddingVertical: 15,
+    borderRadius: 12,
     alignSelf: 'center',
-    marginTop: 10,
-    marginBottom: 60,
+    marginTop: 20,
+    marginBottom: 40,
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 5,
   },
   filterButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   modalContainer: {

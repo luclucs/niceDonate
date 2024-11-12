@@ -30,7 +30,7 @@ export default function ForgotPasswordScreen() {
       await sendPasswordResetEmail(auth, email);
       Alert.alert(
         'E-mail enviado',
-        'Verifique sua caixa de entrada para redefinir sua senha.',
+        'Verifique sua caixa de entrada para redefinir sua senha.'
       );
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -44,28 +44,24 @@ export default function ForgotPasswordScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Recuperar Senha</Text>
-        <Text style={styles.subtitle}>Crie uma nova senha</Text>
+        <Text style={styles.title}>Perdeu a senha? 🔑</Text>
         <Text style={styles.description}>
-          Insira seu endereço de e-mail registrado. Enviaremos um link para você redefinir sua senha.
+          Não se preocupa! Insira seu endereço de e-mail registrado e enviaremos um link para redefinir sua senha.
         </Text>
 
         {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>E-mail</Text>
-          <View style={styles.emailWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu e-mail"
-              keyboardType="email-address"
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              placeholderTextColor="#aaa"
-            />
-            <Ionicons name="mail" size={24} color="gray" />
-          </View>
+          <Ionicons name="mail-outline" size={24} color="#7e60bf" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Digite seu e-mail"
+            placeholderTextColor="#7e60bf"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            autoCapitalize="none"
+          />
         </View>
 
         <TouchableOpacity style={styles.resetButton} onPress={handleResetPassword}>
@@ -79,60 +75,54 @@ export default function ForgotPasswordScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f2eff9',
     justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: '#f2eff9',
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: '#7e60bf',
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    textAlign: 'center',
     color: '#5f48bf',
-    marginBottom: 5,
+    marginBottom: 30,
+    marginTop: -50, // Move o título um pouco mais para cima da tela
   },
   description: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#7e60bf',
     textAlign: 'center',
-    marginBottom: 20,
-    lineHeight: 20,
+    marginBottom: 25,
+    lineHeight: 22,
+    paddingHorizontal: 15,
+    maxWidth: '85%',
+    alignSelf: 'center',
   },
   inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    color: '#7e60bf',
-    marginBottom: 5,
-    fontWeight: '500',
-  },
-  emailWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#d7ceeb',
     borderRadius: 10,
     paddingHorizontal: 10,
+    marginHorizontal: 20,
+    marginTop: 10,
+    marginBottom: 20,
     backgroundColor: '#fff',
   },
   input: {
     flex: 1,
     paddingVertical: 12,
-    paddingHorizontal: 5,
     fontSize: 16,
     color: '#333',
+  },
+  icon: {
+    marginRight: 10,
   },
   resetButton: {
     backgroundColor: '#7e60bf',
     paddingVertical: 15,
     borderRadius: 10,
+    marginHorizontal: 20,
     alignItems: 'center',
     marginTop: 20,
     shadowColor: '#000',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types';
@@ -16,7 +16,6 @@ export default function RegisterScreen() {
   const navigation = useNavigation<RegisterScreenNavigationProp>();
 
   const handleRegister = async () => {
-    // Limpeza de mensagens de erro anteriores
     setErrorMessage(null);
 
     if (!name || !email || !password) {
@@ -43,57 +42,59 @@ export default function RegisterScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Preencha o cadastro :)</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>Preencha o cadastro :)</Text>
 
-      {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
+        {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
 
-      <TextInput
-        style={styles.input}
-        placeholder="Nome completo"
-        placeholderTextColor="#7e60bf"
-        value={name}
-        onChangeText={setName}
-        accessibilityLabel="Nome completo"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        placeholderTextColor="#7e60bf"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-        accessibilityLabel="Endereço de email"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        placeholderTextColor="#7e60bf"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
-        accessibilityLabel="Senha"
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome completo"
+          placeholderTextColor="#7e60bf"
+          value={name}
+          onChangeText={setName}
+          accessibilityLabel="Nome completo"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="E-mail"
+          placeholderTextColor="#7e60bf"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          accessibilityLabel="Endereço de email"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Senha"
+          placeholderTextColor="#7e60bf"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          accessibilityLabel="Senha"
+        />
 
-      <TouchableOpacity
-        style={styles.registerButton}
-        onPress={handleRegister}
-        accessibilityLabel="Registrar nova conta"
-      >
-        <Text style={styles.registerButtonText}>Registrar</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.loginText}>
-        Já tem uma conta?{' '}
-        <Text
-          style={styles.loginLink}
-          onPress={() => navigation.navigate('Login')}
-          accessibilityLabel="Ir para tela de login"
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={handleRegister}
+          accessibilityLabel="Registrar nova conta"
         >
-          Voltar para login
+          <Text style={styles.registerButtonText}>Registrar</Text>
+        </TouchableOpacity>
+
+        <Text style={styles.loginText}>
+          Já tem uma conta?{' '}
+          <Text
+            style={styles.loginLink}
+            onPress={() => navigation.navigate('Login')}
+            accessibilityLabel="Ir para tela de login"
+          >
+            Voltar para o login
+          </Text>
         </Text>
-      </Text>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -115,18 +116,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d7ceeb',
     borderRadius: 10,
+    padding: 16,
     marginHorizontal: 20,
-    padding: 10,
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 16,
+    marginBottom: 10,
+    color: '#333',
   },
   registerButton: {
     backgroundColor: '#7e60bf',
     paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 20,
-    marginHorizontal: 20
+    marginTop: 24,
+    marginHorizontal: 20,
   },
   registerButtonText: {
     color: '#fff',
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     color: '#555',
+    marginTop: 20,
   },
   loginLink: {
     color: '#5f48bf',
@@ -146,5 +149,6 @@ const styles = StyleSheet.create({
     color: 'red',
     textAlign: 'center',
     marginBottom: 10,
+    fontSize: 14,
   },
 });

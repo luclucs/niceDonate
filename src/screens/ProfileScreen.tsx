@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { getAuth, signOut } from 'firebase/auth';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { useNavigation, NavigationProp, CommonActions } from '@react-navigation/native';
 import { RootStackParamList } from '../types';
 import { getFirestore, doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -64,7 +64,12 @@ export default function ProfileScreen() {
         onPress: async () => {
           try {
             await signOut(auth);
-            navigation.navigate('Login');
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              })
+            );
           } catch (error) {
             Alert.alert('Erro', 'Não foi possível sair da conta. Tente novamente.');
           }
