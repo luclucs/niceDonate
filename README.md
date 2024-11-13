@@ -66,4 +66,3 @@ Para executar o niceDonate em sua máquina local:
 Agradecemos ao professor **Wolney Queiroz** pela orientação e suporte durante a disciplina de Desenvolvimento Mobile, e à **Expotech** por proporcionar um espaço de compartilhamento de ideias e inovações tecnológicas. Este projeto é fruto de muito aprendizado e dedicação.
 
 Desenvolvido com 💜 pela equipe niceDonate.
-```
