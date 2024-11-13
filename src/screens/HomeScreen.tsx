@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, SafeAreaView, TouchableOpacity, Modal, Alert, Button } from 'react-native';
+import { View, Text, FlatList, Image, StyleSheet, SafeAreaView, TouchableOpacity, Modal, Alert, Animated } from 'react-native';
 import { firestore } from '../firebaseConfig';
 import { collection, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,6 +38,7 @@ const HomeScreen = () => {
     outros: false,
   });
   const [currentUser, setCurrentUser] = useState(getAuth().currentUser);
+  const filterModalAnimation = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
     const auth = getAuth();
@@ -67,7 +68,14 @@ const HomeScreen = () => {
     };
   }, []);
 
-  const toggleFilterModal = () => setIsFilterModalVisible(!isFilterModalVisible);
+  const toggleFilterModal = () => {
+    setIsFilterModalVisible(!isFilterModalVisible);
+    Animated.timing(filterModalAnimation, {
+      toValue: isFilterModalVisible ? 0 : 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
 
   const applyFilter = () => {
     const selectedKeys = Object.keys(selectedCategories).filter((key) => selectedCategories[key]);
@@ -100,7 +108,6 @@ const HomeScreen = () => {
         setFilteredDonations((prev) => prev.filter((item) => item.id !== selectedDonation.id));
         closeDetailModal();
       } catch (error) {
-        console.error('Erro ao excluir doação:', error);
         Alert.alert('Erro', 'Não foi possível excluir a doação. Tente novamente.');
       }
     }
@@ -116,11 +123,12 @@ const HomeScreen = () => {
           <Text style={styles.type}>{item.type}</Text>
         </View>
         <TouchableOpacity onPress={() => openDetailModal(item)}>
-          <Ionicons name="expand" size={24} color="#5f48bf" style={styles.expandIcon} />
+          <Ionicons name="chevron-down" size={28} color="#5f48bf" style={styles.expandIcon} />
         </TouchableOpacity>
       </View>
     </View>
   );
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -137,8 +145,8 @@ const HomeScreen = () => {
       </TouchableOpacity>
 
       {/* Filtro Modal */}
-      <Modal visible={isFilterModalVisible} transparent={true} animationType="slide">
-        <View style={styles.modalContainer}>
+      <Modal visible={isFilterModalVisible} transparent={true} animationType="fade">
+        <Animated.View style={[styles.modalContainer, { opacity: filterModalAnimation }]}>
           <View style={styles.filterContent}>
             <Text style={styles.modalTitle}>Selecione entre</Text>
             <View style={styles.categoriesContainer}>
@@ -157,7 +165,7 @@ const HomeScreen = () => {
               <Text style={styles.applyButtonText}>Aplicar filtro</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animated.View>
       </Modal>
 
       {/* Detalhes Modal */}
@@ -169,12 +177,16 @@ const HomeScreen = () => {
               <Text style={styles.detailName}>{selectedDonation.name}</Text>
               <Text style={styles.detailLocation}>{selectedDonation.location}</Text>
               <Text style={styles.detailType}>Categorias: {selectedDonation.type}</Text>
-              {selectedDonation.uid === currentUser?.uid && (
+
+              {selectedDonation.uid && currentUser?.uid && selectedDonation.uid === currentUser.uid && (
                 <TouchableOpacity style={styles.deleteButton} onPress={deleteDonation}>
                   <Text style={styles.deleteButtonText}>Excluir Doação</Text>
                 </TouchableOpacity>
               )}
-              <Button title="Fechar" onPress={closeDetailModal} color="#7e60bf" />
+
+              <TouchableOpacity style={styles.closeButton} onPress={closeDetailModal}>
+                <Text style={styles.closeButtonText}>Fechar</Text>
+              </TouchableOpacity>
             </>
           )}
         </SafeAreaView>
@@ -206,7 +218,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 15,
     marginBottom: 15,
-    width: '90%', // Limita a largura dos cards para que não ocupem toda a tela
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#000',
@@ -243,7 +255,13 @@ const styles = StyleSheet.create({
   },
   expandIcon: {
     marginLeft: 10,
+    transform: [{ translateY: -1 }], // Ajuste sutil na posição vertical
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    elevation: 2,
   },
+  
   filterButton: {
     backgroundColor: '#7e60bf',
     paddingHorizontal: 35,
@@ -268,11 +286,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   filterContent: {
-    width: '80%',
+    width: '85%',
     backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
+    borderRadius: 15,
+    padding: 25,
     alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
   },
   modalTitle: {
     fontSize: 20,
@@ -297,43 +319,53 @@ const styles = StyleSheet.create({
   },
   applyButton: {
     backgroundColor: '#7e60bf',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 25,
+    width: '100%',
+    alignItems: 'center',
   },
   applyButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   detailModalContainer: {
     flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 20,
     backgroundColor: '#f2eff9',
   },
   detailImage: {
-    width: '100%',
-    height: 200,
-    borderRadius: 10,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#7e60bf',
   },
   detailName: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#5f48bf',
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   detailLocation: {
     fontSize: 18,
-    color: '#777',
+    color: '#7a7a7a',
     marginBottom: 10,
+    textAlign: 'center',
+    paddingHorizontal: 10,
+    lineHeight: 24,
   },
   detailType: {
     fontSize: 18,
     color: '#5f48bf',
     marginBottom: 20,
+    textAlign: 'center',
   },
   deleteButton: {
     backgroundColor: '#e74c3c',
@@ -342,10 +374,33 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 20,
     alignItems: 'center',
+    width: '70%',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 3,
   },
   deleteButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    marginTop: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    backgroundColor: '#7e60bf',
+    width: '80%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
