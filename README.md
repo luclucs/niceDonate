@@ -1,4 +1,3 @@
-```markdown
 # niceDonate
 
 Este repositório contém o código-fonte do aplicativo **niceDonate**, desenvolvido para a disciplina de **Desenvolvimento Mobile**, ministrada pelo professor **Wolney Queiroz**. Este projeto será apresentado na **Expotech** em **14 de novembro de 2024** como parte da avaliação final da matéria.
